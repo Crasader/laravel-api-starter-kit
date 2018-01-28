@@ -14,6 +14,9 @@ The starter kit uses the following packages.
 - Base Response Controller
 - Use Of Repositories
 - Error Handling Traits
+
+## Cross Origin Resource Sharing
+Check the [barryvdh/laravel-cors package documentation](https://github.com/barryvdh/laravel-cors) for more information and instruction on its usage.
  
 ## Feedback
 This project was made for personal use. However, everyone is free to use/fork and modify it as you like.

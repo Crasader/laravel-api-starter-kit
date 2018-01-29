@@ -2,11 +2,15 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiExceptionTrait;
+use App\Traits\ApiTrait;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
+    use ApiTrait, ApiExceptionTrait;
     /**
      * A list of the exception types that are not reported.
      *
@@ -48,6 +52,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        if (!$this->isApiCall($request) OR $exception instanceof ValidationException) {
+            return parent::render($request, $exception);
+        }
+    
+        return $this->getJsonResponseForException($request, $exception);
     }
 }

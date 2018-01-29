@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Exceptions\ApiResponseExceptionHandler;
 use App\Traits\ApiResponseTrait;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -12,6 +13,8 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 trait ApiExceptionTrait
 {
@@ -26,73 +29,50 @@ trait ApiExceptionTrait
     protected function getJsonResponseForException(Exception $e)
     {
         switch (true) {
-            
             case $this->isModelNotFoundException($e):
-                
                 $response = $this->responseNotFound();
-                
                 break;
             
             case $this->isRouteNotFoundException($e):
-                
-                $response = $this->responseWithError('Page not found.');
-                
+                $response = $this->responseWithError(trans('notfound.page', 404));
                 break;
             
             case $this->isAuthenticationException($e):
-                
-                $response = $this->responseWithError('Unauthenticated.', 401);
-                
+                $response = $this->responseWithError(trans('auth.unauthenticated'), 401);
                 break;
             
             case $this->isApiResponseException($e):
-                
                 $response = $this->responseWithError($e->getMessage(), 500);
-                
                 break;
             
             case $this->isTokenExpiredException($e) :
-                
-                $response = $this->responseWithError('Expired token, please re-login.', 401);
-                
+                $response = $this->responseWithError(trans('auth.token.expired'), 401);
                 break;
             
             case $this->isTokenInvalidException($e):
-                
                 $response = $this->responseInvalidToken();
-                
                 break;
             
             case $this->isAuthorizationException($e):
-                
-                $response = $this->responseWithError('Unauthorized', 401);
-                
+                $response = $this->responseWithError(trans('auth.unauthorized'), 401);
                 break;
             
             case $this->isHttpException($e):
-                
                 $response = $this->responseWithError($e->getMessage());
-                
                 break;
             
             case $this->isQueryException($e):
-                
-                $response = $this->responseWithErrorTrace('Query execution failed. Please try again.',
-                    $e->getMessage());
-                
+                $response = $this->responseWithErrorTrace(trans('query.failed'), $e->getMessage());
                 break;
             
             case $this->isFieldValidationException($e):
-                
-                $response = $this->responseWithError($e->getMessage());
-                
+                $response = $this->responseWithError($e->errors());
                 break;
             
             default:
-                
-                $trace = "Line: {$e->getLine()} File: {$e->getFile()} Message: {$e->getMessage()}";
-                
+                $trace    = "Line: {$e->getLine()} File: {$e->getFile()} Message: {$e->getMessage()}";
                 $response = $this->responseWithErrorTrace('General Exception.', $trace);
+                break;
             
         }
         
@@ -140,7 +120,7 @@ trait ApiExceptionTrait
      */
     protected function isApiResponseException(Exception $e)
     {
-        #return $e instanceof ApiResponseException;
+        return $e instanceof ApiResponseExceptionHandler;
     }
     
     /**
@@ -151,7 +131,7 @@ trait ApiExceptionTrait
      */
     protected function isTokenExpiredException(Exception $e)
     {
-        #return $e instanceof TokenExpiredException;
+        return $e instanceof TokenExpiredException;
     }
     
     /**
@@ -162,7 +142,7 @@ trait ApiExceptionTrait
      */
     protected function isTokenInvalidException(Exception $e)
     {
-        #return $e instanceof TokenInvalidException;
+        return $e instanceof TokenInvalidException;
     }
     
     /**

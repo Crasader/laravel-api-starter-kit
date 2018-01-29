@@ -24,7 +24,7 @@ trait ApiResponseTrait
     public function responseWithError($message, $code = 400)
     {
         return $this->response([
-            'code'    => 'error',
+            'status'  => 'error',
             'message' => $message,
         ], $code);
     }
@@ -52,7 +52,7 @@ trait ApiResponseTrait
     public function responseWithErrorTrace($message, $trace)
     {
         return $this->response([
-            'code'    => 'error',
+            'status'  => 'error',
             'message' => $message,
             'trace'   => $trace
         ], 500);
@@ -88,7 +88,7 @@ trait ApiResponseTrait
     public function responseWithSuccess($message)
     {
         return $this->response([
-            'code'    => 'success',
+            'status'  => 'success',
             'message' => $message,
         ], 200);
     }

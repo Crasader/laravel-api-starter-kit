@@ -52,10 +52,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if (!$this->isApiCall($request) OR $exception instanceof ValidationException) {
+        if (!$this->isApiCall($request)) {
+            
             return parent::render($request, $exception);
+            
         }
-    
-        return $this->getJsonResponseForException($request, $exception);
+        
+        return $this->getJsonResponseForException($exception);
     }
 }

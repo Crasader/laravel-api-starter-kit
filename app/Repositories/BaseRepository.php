@@ -26,15 +26,15 @@ abstract class BaseRepository
                            ->first($columns);
     }
     
-    public function update($id, $update_data = [])
+    public function update($id, $data = [])
     {
         return $this->model->where('id', $id)
-                           ->update($update_data);
+                           ->update($data);
     }
     
-    public function create($data_insert)
+    public function create($data)
     {
-        return $this->model->create($data_insert);
+        return $this->model->create($data);
     }
     
     public function delete($id)

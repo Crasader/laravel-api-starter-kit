@@ -84,10 +84,10 @@ trait ApiExceptionTrait
             
             case $this->isFieldValidationException($e):
                 
-                $response = $this->convertValidationExceptionToResponse($e);
+                $response = $this->responseWithError($e->getMessage());
                 
                 break;
-                
+            
             default:
                 
                 $trace = "Line: {$e->getLine()} File: {$e->getFile()} Message: {$e->getMessage()}";
@@ -207,20 +207,6 @@ trait ApiExceptionTrait
     protected function isFieldValidationException(Exception $e)
     {
         return $e instanceof ValidationException;
-    }
-    
-    /**
-     * Create a response object from the given validation exception.
-     *
-     * @param  \Illuminate\Validation\ValidationException $e
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function convertValidationExceptionToResponse(ValidationException $e)
-    {
-        $errors = $e->validator->errors()
-                               ->first();
-        
-        return $this->responseWithError($errors);
     }
     
     /**

@@ -30,6 +30,7 @@ class LoginController extends Controller
         
         try {
             
+            // Attempt to login the user
             if (!$token = $JWTAuth->attempt($credentials)) {
                 
                 // To many login attempts error
@@ -52,7 +53,7 @@ class LoginController extends Controller
             
         }
         
-        return response()->json([
+        return $this->response([
             'status'     => 'success',
             'token'      => $token,
             'expires_in' => $JWTAuth->factory()

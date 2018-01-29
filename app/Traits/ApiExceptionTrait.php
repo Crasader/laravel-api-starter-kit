@@ -29,6 +29,7 @@ trait ApiExceptionTrait
     protected function getJsonResponseForException(Exception $e)
     {
         switch (true) {
+            
             case $this->isModelNotFoundException($e):
                 $response = $this->responseNotFound();
                 break;
@@ -66,7 +67,11 @@ trait ApiExceptionTrait
                 break;
             
             case $this->isFieldValidationException($e):
-                $response = $this->responseWithError($e->errors());
+                $response = $this->response([
+                    'status'  => 'error',
+                    'message' => $e->getMessage(),
+                    'errors'  => $e->errors()
+                ]);
                 break;
             
             default:

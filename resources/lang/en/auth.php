@@ -17,5 +17,7 @@ return [
     'throttle'        => 'Too many login attempts. Please try again later.',
     'unauthenticated' => 'Unauthenticated',
     'unauthorized'    => 'Unauthorized',
-    'token.expired'   => 'Expired token, please refresh or re-login.'
+    'token.expired'   => 'Expired token, please refresh or re-login.',
+    'logout'          => 'Successfully logged out.',
+    
 ];

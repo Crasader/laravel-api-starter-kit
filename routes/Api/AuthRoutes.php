@@ -21,4 +21,11 @@ Route::group([
          ->uses('ResetPasswordController@resetPassword')
          ->name('auth.reset');
     
+    Route::post('logout')
+         ->uses('LogoutController@logout')
+         ->name('auth.logout');
+    
+    Route::post('refresh')
+         ->uses('RefreshController@refresh')
+         ->name('auth.refresh');
 });

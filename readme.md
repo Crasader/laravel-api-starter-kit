@@ -1,4 +1,4 @@
-## Laravel API Starter Kit For Laravel 5.5
+## API Starter Kit Using JWT-Auth For Laravel 5.5
 
 Laravel api starter kit can be use to jump start your api projects. 
 Its built on top of Laravel 5.5
@@ -10,9 +10,9 @@ The starter kit uses the following packages.
 
 ## Features
 - Base Authentication Controllers
-- Separation Of Routes Using The Route Service Provider
+- Individual Route Files
 - Base Response Controller
-- Use Of Repositories
+- Base Repositories
 - Error Handling Traits
 
 ## Cross Origin Resource Sharing

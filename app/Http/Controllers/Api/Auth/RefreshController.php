@@ -18,9 +18,10 @@ class RefreshController extends Controller
         $token = $JWTAuth->refresh();
         
         return response()->json([
-            'status' => 'ok',
-            'token' => $token,
-            'expires_in' => $JWTAuth->factory()->getTTL() * 60
+            'status'     => 'success',
+            'token'      => $token,
+            'expires_in' => $JWTAuth->factory()
+                                    ->getTTL() * 60
         ]);
     }
 }

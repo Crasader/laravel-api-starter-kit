@@ -35,7 +35,7 @@ trait ApiExceptionTrait
                 break;
             
             case $this->isRouteNotFoundException($e):
-                $response = $this->responseWithError(trans('notfound.page', 404));
+                $response = $this->responseWithError(trans('notfound.page'), 404);
                 break;
             
             case $this->isAuthenticationException($e):

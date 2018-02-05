@@ -5,27 +5,25 @@ namespace App\Http\Controllers\Api\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\JWTAuth;
 
 class LogoutController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('jwt.auth');
     }
     
     /**
      * Logged out a user session
      *
-     * @param Request $request
+     * @param JWTAuth $JWTAuth
      * @return mixed
      */
-    public function logout(Request $request)
+    public function logout(JWTAuth $JWTAuth)
     {
-        Auth::guard()
-            ->logout();
-        
-        $request->session()
-                ->invalidate();
+        $token = $JWTAuth->getToken();
+        $JWTAuth->invalidate($token);
         
         return $this->responseWithSuccess(trans('auth.logout'));
     }

@@ -13,11 +13,12 @@ return [
     |
     */
     
-    'failed'          => 'These credentials do not match our records.',
-    'throttle'        => 'Too many login attempts. Please try again later.',
-    'unauthenticated' => 'Unauthenticated',
-    'unauthorized'    => 'Unauthorized',
-    'token.expired'   => 'Expired token, please refresh or re-login.',
-    'logout'          => 'Successfully logged out.',
-    
+    'failed'            => 'These credentials do not match our records.',
+    'throttle'          => 'Too many login attempts. Please try again later.',
+    'unauthenticated'   => 'Unauthenticated',
+    'unauthorized'      => 'Unauthorized access. Please re-login.',
+    'token.expired'     => 'Expired token, please refresh or re-login.',
+    'logout'            => 'Successfully logged out.',
+    'token.blacklisted' => 'The token has been blacklisted. Please re-login.'
+
 ];

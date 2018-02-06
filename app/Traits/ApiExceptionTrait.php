@@ -13,6 +13,8 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
@@ -28,6 +30,8 @@ trait ApiExceptionTrait
      */
     protected function getJsonResponseForException(Exception $e)
     {
+        #echo get_class($e);
+        #exit();
         switch (true) {
             
             case $this->isModelNotFoundException($e):
@@ -46,12 +50,20 @@ trait ApiExceptionTrait
                 $response = $this->responseWithError($e->getMessage(), 500);
                 break;
             
+            case $this->isTokenBlacklistedException($e):
+                $response = $this->responseWithError(trans('auth.token.blacklisted'));
+                break;
+            
             case $this->isTokenExpiredException($e) :
                 $response = $this->responseWithError(trans('auth.token.expired'), 401);
                 break;
             
             case $this->isTokenInvalidException($e):
                 $response = $this->responseInvalidToken();
+                break;
+            
+            case $this->isUnauthorizedHttpException($e):
+                $response = $this->responseWithError(trans('auth.unauthorized'));
                 break;
             
             case $this->isAuthorizationException($e):
@@ -129,6 +141,17 @@ trait ApiExceptionTrait
     }
     
     /**
+     * Token is blacklisted or invalidated
+     *
+     * @param Exception $e
+     * @return bool
+     */
+    protected function isTokenBlacklistedException(Exception $e)
+    {
+        return $e instanceof TokenBlacklistedException;
+    }
+    
+    /**
      * Determines if token has expired
      *
      * @param Exception $e
@@ -148,6 +171,17 @@ trait ApiExceptionTrait
     protected function isTokenInvalidException(Exception $e)
     {
         return $e instanceof TokenInvalidException;
+    }
+    
+    /**
+     * Generate if token is blacklisted
+     *
+     * @param Exception $e
+     * @return bool
+     */
+    protected function isUnauthorizedHttpException(Exception $e)
+    {
+        return $e instanceof UnauthorizedHttpException;
     }
     
     /**

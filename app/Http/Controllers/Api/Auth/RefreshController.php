@@ -15,6 +15,7 @@ class RefreshController extends Controller
      */
     public function refresh(JWTAuth $JWTAuth)
     {
+        $JWTAuth->getToken();
         $token = $JWTAuth->refresh();
         
         return response()->json([

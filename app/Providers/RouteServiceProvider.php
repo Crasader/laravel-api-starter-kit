@@ -60,6 +60,7 @@ class RouteServiceProvider extends ServiceProvider
         ], function () {
         
             require base_path($this->api_routes . '/AuthRoutes.php');
+            require base_path($this->api_routes . '/SampleProtectedRoutes.php');
             
         });
     }
